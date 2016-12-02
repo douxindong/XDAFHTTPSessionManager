@@ -1,0 +1,2 @@
+# XDAFHTTPSessionManager
+对AFHTTPSessionManager的二次封装，紧贴AFNetworking的思想，先判断在请求，严谨全面，基本满足需求
