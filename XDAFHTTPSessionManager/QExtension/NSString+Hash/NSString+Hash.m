@@ -74,7 +74,7 @@
     const char *strData = self.UTF8String;
     uint8_t buffer[CC_MD5_DIGEST_LENGTH];
 
-    CCHmac(kCCHmacAXDMD5, keyData, strlen(keyData), strData, strlen(strData), buffer);
+    CCHmac(kCCHmacAlgMD5, keyData, strlen(keyData), strData, strlen(strData), buffer);
 
     return [self q_stringFromBytes:buffer length:CC_MD5_DIGEST_LENGTH];
 }
@@ -84,7 +84,7 @@
     const char *strData = self.UTF8String;
     uint8_t buffer[CC_SHA1_DIGEST_LENGTH];
 
-    CCHmac(kCCHmacAXDSHA1, keyData, strlen(keyData), strData, strlen(strData), buffer);
+    CCHmac(kCCHmacAlgSHA1, keyData, strlen(keyData), strData, strlen(strData), buffer);
 
     return [self q_stringFromBytes:buffer length:CC_SHA1_DIGEST_LENGTH];
 }
@@ -94,7 +94,7 @@
     const char *strData = self.UTF8String;
     uint8_t buffer[CC_SHA256_DIGEST_LENGTH];
 
-    CCHmac(kCCHmacAXDSHA256, keyData, strlen(keyData), strData, strlen(strData), buffer);
+    CCHmac(kCCHmacAlgSHA256, keyData, strlen(keyData), strData, strlen(strData), buffer);
 
     return [self q_stringFromBytes:buffer length:CC_SHA256_DIGEST_LENGTH];
 }
@@ -104,7 +104,7 @@
     const char *strData = self.UTF8String;
     uint8_t buffer[CC_SHA512_DIGEST_LENGTH];
 
-    CCHmac(kCCHmacAXDSHA512, keyData, strlen(keyData), strData, strlen(strData), buffer);
+    CCHmac(kCCHmacAlgSHA512, keyData, strlen(keyData), strData, strlen(strData), buffer);
 
     return [self q_stringFromBytes:buffer length:CC_SHA512_DIGEST_LENGTH];
 }
