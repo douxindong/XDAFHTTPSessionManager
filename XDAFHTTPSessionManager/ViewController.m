@@ -57,7 +57,7 @@
 }
 
 - (void)download{
-    [XDSessionManager downloadWithURL:@"http://120.25.226.186:32812/resources/videos/minion_01.mp4" fileDir:@"video" progress:^(NSProgress *progress) {
+    [XDHTTPSessionManager downloadWithURL:@"http://120.25.226.186:32812/resources/videos/minion_01.mp4" fileDir:@"video" progress:^(NSProgress *progress) {
         [DownLoadData downloadProgress:progress];
     } success:^(NSString *filePath) {
         NSLog(@"全路径是filePath.absoluteString ======%@",filePath);
@@ -71,7 +71,7 @@
                                  @"pageNo":@1,
                                  @"pageSize":@"20"
                                  };
-    [XDSessionManager POST:@"http://115.28.11.62:8080/heal/api/heal/plan/list" parameters:parameters progress:^(NSProgress *progress) {
+    [XDHTTPSessionManager POST:@"http://115.28.11.62:8080/heal/api/heal/plan/list" parameters:parameters progress:^(NSProgress *progress) {
         [DownLoadData downloadProgress:progress];
     } success:^(id responseObject) {
         

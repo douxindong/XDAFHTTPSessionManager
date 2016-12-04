@@ -10,7 +10,9 @@
 //  http://www.cnblogs.com/QianChia/p/5768428.html#autoid-7-0-0
 
 #import <AFNetworking/AFNetworking.h>
-
+#define XDWeak  __weak __typeof(self) weakSelf = self
+/*! 过期属性或方法名提醒 */
+#define XDNetManagerDeprecated(instead) __deprecated_msg(instead)
 typedef NS_ENUM(NSUInteger,RequestMethod) {
     POST = 0,
     GET,
@@ -18,6 +20,18 @@ typedef NS_ENUM(NSUInteger,RequestMethod) {
     PATCH,
     DELETE,
     HEAD
+};
+/*！定义请求类型的枚举 */
+typedef NS_ENUM(NSUInteger, XDHttpRequestType)
+{
+    /*! get请求 */
+    XDHttpRequestTypeGet = 0,
+    /*! post请求 */
+    XDHttpRequestTypePost,
+    /*! put请求 */
+    XDHttpRequestTypePut,
+    /*! delete请求 */
+    XDHttpRequestTypeDelete
 };
 typedef NS_ENUM(NSInteger, AFNetworkErrorType) {
     AFNetworkErrorType_TimedOut = NSURLErrorTimedOut,                //-1001 请求超时
@@ -67,12 +81,12 @@ typedef NSURLSessionTask XDURLSessionTask;
 /**
  *  开始监听网络状态
  */
-- (void)startMonitoringNetwork;
++ (void)startMonitoringNetwork;
 
 /**
  *  实时获取网络状态回调
  */
-- (void)networkStatusWithBlock:(NetworkStatus)status;
++ (void)networkStatusWithBlock:(NetworkStatus)status;
 
 /**
  *  GET请求,无缓存
@@ -85,7 +99,7 @@ typedef NSURLSessionTask XDURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-- (XDURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (XDURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  GET请求,自动缓存
@@ -99,7 +113,7 @@ typedef NSURLSessionTask XDURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-- (XDURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (XDURLSessionTask *)GET:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  POST请求,无缓存
@@ -112,7 +126,7 @@ typedef NSURLSessionTask XDURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-- (XDURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (XDURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  POST请求,自动缓存
@@ -126,8 +140,18 @@ typedef NSURLSessionTask XDURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-- (XDURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
-
++ (XDURLSessionTask *)POST:(NSString *)URL parameters:(NSDictionary *)parameters responseCache:(HttpRequestCache)responseCache progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
+/*!
+ *  网络请求的实例方法
+ *
+ *  @param type         get / post / put / delete
+ *  @param urlString    请求的地址
+ *  @param parameters    请求的参数
+ *  @param successBlock 请求成功的回调
+ *  @param failureBlock 请求失败的回调
+ *  @param progress 进度
+ */
++ (XDURLSessionTask *)ba_requestWithType:(XDHttpRequestType)type UrlString:(NSString *)urlString Parameters:(NSDictionary *)parameters progress:(HttpProgress)progress SuccessBlock:(HttpRequestSuccess)successBlock FailureBlock:(HttpRequestFailed)failureBlock XDNetManagerDeprecated("该方法已过期,请使用最新方法：+ (BAURLSessionTask *)ba_requestWithType:(BAHttpRequestType)type urlString:(NSString *)urlString parameters:(NSDictionary *)parameters successBlock:(BAResponseSuccess)successBlock failureBlock:(BAResponseFail)failureBlock progress:(BADownloadProgress)progress");
 /**
  *  上传图片文件
  *
@@ -143,7 +167,7 @@ typedef NSURLSessionTask XDURLSessionTask;
  *
  *  @return 返回的对象可取消请求,调用cancle方法
  */
-- (XDURLSessionTask *)uploadWithURL:(NSString *)URL parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images name:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
++ (XDURLSessionTask *)uploadWithURL:(NSString *)URL parameters:(NSDictionary *)parameters images:(NSArray<UIImage *> *)images name:(NSString *)name fileName:(NSString *)fileName mimeType:(NSString *)mimeType progress:(HttpProgress)progress success:(HttpRequestSuccess)success failure:(HttpRequestFailed)failure;
 
 /**
  *  下载文件
@@ -156,7 +180,7 @@ typedef NSURLSessionTask XDURLSessionTask;
  *
  *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
  */
-- (XDURLSessionTask *)downloadWithURL:(NSString *)URL fileDir:(NSString *)fileDir progress:(HttpProgress)progress success:(void(^)(NSString *filePath))success failure:(HttpRequestFailed)failure;
++ (XDURLSessionTask *)downloadWithURL:(NSString *)URL fileDir:(NSString *)fileDir progress:(HttpProgress)progress success:(void(^)(NSString *filePath))success failure:(HttpRequestFailed)failure;
 
 
 
